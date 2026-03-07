@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | MicroWealth AI</title>
+  
+</head>
+<body>
+
+
+
+<form id="loginForm">
+    <h2>Login</h2>
+    <input type="email" id="email" placeholder="Email" required><br><br>
+    <input type="password" id="password" placeholder="Password" required><br><br>
+    <button type="submit">Login</button>
+    <p class="register-link">
+    Don't have an account? <a href="register.html">Register here</a>
+</p>
+</form>
+
+<p id="message"></p>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   background: linear-gradient(135deg, #00ff99, #0072ff);
+}
+
+/* ===== Login Container ===== */
+form#loginForm {
+    background: #fff;
+    padding: 35px 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 26px;
+    background: linear-gradient(135deg, #00ff99, #0072ff);
+   
+}
+
+
+input[type="email"],
+input[type="password"] {
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border: 1px solid #2575fc;
+    box-shadow: 0 0 6px rgba(37, 252, 170, 0.4);
+}
+
+
+button[type="submit"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(135deg, #00ff99, #0072ff);
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(37,117,252,0.4);
+}
+
+
+#message {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 14px;
+    min-height: 18px;
+    color: red;
+}
+
+
+.register-link {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+
+.register-link a {
+   background: linear-gradient(135deg, #00ff99, #0072ff);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+
+@media (max-width: 400px) {
+    form#loginForm {
+        width: 90%;
+        padding: 30px 20px;
+    }
+}
+</style>
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+
+</html>

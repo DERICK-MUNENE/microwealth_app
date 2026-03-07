@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroWealth AI | Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+            <span>MicroWealth AI</span>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="index.html#features"><i class="fas fa-star"></i> Features</a></li>
+            <li><a href="index.html#about"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li class="user-info">
+                <span class="user"><i class="fas fa-user-circle"></i> </span>
+                <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </li>
+        </ul>
+        <div class="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+</header>
+
+<!-- DASHBOARD LAYOUT -->
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="fas fa-bars"></i> Navigation</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li data-section="manual" class="active"><i class="fas fa-hand-holding-usd"></i> <span>Manual Analysis</span></li>
+            <li data-section="pdf"><i class="fas fa-file-pdf"></i> <span>PDF Analysis</span></li>
+            <li data-section="projection"><i class="fas fa-chart-bar"></i> <span>Investment Projection</span></li>
+            <li data-section="cashflow"><i class="fas fa-money-bill-wave"></i> <span>Cashflow Intelligence</span></li>
+            <li>
+    <a href="history.html">
+        <i class="fas fa-history"></i> <span>History</span>
+    </a>
+</li>
+
+        </ul>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="profile-img">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <h4 id="userName">User Name</h4>
+                    <p id="userRole">Premium User</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+        <div class="content-header">
+            <h1>Financial Dashboard</h1>
+            <div class="date-display">
+                <i class="fas fa-calendar-alt"></i>
+                <span id="currentDate">Loading...</span>
+            </div>
+        </div>
+
+        <!-- MANUAL ANALYSIS -->
+        <section id="manual" class="section active">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-hand-holding-usd"></i> Manual Financial Analysis</h2>
+                    <p>Input your monthly financial data for AI-powered analysis</p>
+                </div>
+                <form id="finance-form" class="analysis-form">
+                    <div class="form-group">
+                        <label for="income"><i class="fas fa-money-bill-wave"></i> Monthly Income (KSh)</label>
+                        <input type="number" id="income" placeholder="Enter monthly income" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expenses"><i class="fas fa-shopping-cart"></i> Monthly Expenses (KSh)</label>
+                        <input type="number" id="expenses" placeholder="Enter monthly expenses" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="savings"><i class="fas fa-piggy-bank"></i> Current Savings (KSh)</label>
+                        <input type="number" id="savings" placeholder="Enter current savings" required>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="fas fa-chart-line"></i> Analyze Finances</button>
+                </form>
+                <div id="manualResult" class="result-box"></div>
+            </div>
+        </section>
+
+        <!-- PDF ANALYSIS -->
+        <section id="pdf" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-pdf"></i> PDF Financial Analysis</h2>
+                    <p>Upload bank statements or financial PDFs for automated analysis</p>
+                </div>
+                <form id="pdf-form" class="upload-form">
+                    <div class="upload-area" id="dropArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag & Drop PDF Files</h3>
+                        <p>or click to browse (Max: 10MB)</p>
+                        <input type="file" id="pdfFile" accept="application/pdf" hidden required>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="fas fa-magic"></i> Upload & Analyze</button>
+                </form>
+                <div id="pdfResult" class="result-box"></div>
+            </div>
+        </section>
+
+        <!-- INVESTMENT PROJECTION -->
+        <section id="projection" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-bar"></i> Investment Projection</h2>
+                    <p>Project your investment growth with AI-powered calculations</p>
+                </div>
+                <form id="projection-form" class="analysis-form">
+                    <div class="form-group">
+                        <label for="investAmount"><i class="fas fa-coins"></i> Amount to Invest (KSh)</label>
+                        <input type="number" id="investAmount" placeholder="Enter investment amount" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="investYears"><i class="fas fa-calendar"></i> Investment Period (Years)</label>
+                        <input type="number" id="investYears" placeholder="Enter period in years" required min="1" max="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="riskLevel"><i class="fas fa-exclamation-triangle"></i> Risk Level</label>
+                        <select id="riskLevel">
+                            <option value="low">Low Risk (Conservative)</option>
+                            <option value="medium" selected>Medium Risk (Balanced)</option>
+                            <option value="high">High Risk (Aggressive)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-submit"><i class="fas fa-chart-line"></i> Generate Projection</button>
+                </form>
+                <div id="projectionResult" class="result-box"></div>
+            </div>
+        </section>
+
+        <!-- CASHFLOW -->
+        <section id="cashflow" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-money-bill-wave"></i> Cashflow Intelligence</h2>
+                    <p>AI-powered cashflow analysis with smart recommendations</p>
+                </div>
+                <div class="cashflow-actions">
+                    <button id="testCashflowBtn" class="btn-primary"><i class="fas fa-brain"></i> Analyze Cashflow</button>
+                    
+                </div>
+                <div id="cashflowResult" class="result-box"></div>
+            </div>
+        </section>
+
+        <!-- HISTORY -->
+        <section id="history" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-history"></i> Financial History</h2>
+                    <p>Track your financial analysis history and progress</p>
+                </div>
+                <div class="table-container">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Income</th>
+                                <th>Expenses</th>
+                                <th>Savings</th>
+                                <th>Disposable</th>
+                                <th>Risk</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="dashboard-footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3><i class="fas fa-chart-line"></i> MicroWealth AI</h3>
+            <p>AI-Powered Financial Intelligence Platform</p>
+        </div>
+        <div class="footer-section">
+            <p>&copy; 2024 MicroWealth AI. All rights reserved.</p>
+            <p><i class="fas fa-shield-alt"></i> Secure & Encrypted</p>
+        </div>
+        <div class="footer-section">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a> | 
+            <a href="index.html#contact"><i class="fas fa-envelope"></i> Support</a> | 
+            <a href="#"><i class="fas fa-file-alt"></i> Privacy</a>
+        </div>
+    </div>
+</footer>
+
+<script src="auth.js"></script>
+<script src="ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="script.js"></script>
+
+
+</body>
+</html>

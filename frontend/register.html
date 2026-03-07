@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register | MicroWealth AI</title>
+</head>
+<body>
+
+
+
+<form id="registerForm">
+    <h2>Create Account</h2>
+    <input type="text" id="full_name" placeholder="Full Name" required><br><br>
+    <input type="email" id="email" placeholder="Email" required><br><br>
+    <input type="password" id="password" placeholder="Password" required><br><br>
+    <button type="submit">Register</button>
+    <p class="login-link">
+    have an account? <a href="login.html">Login here</a>
+</p>
+</form>
+
+<p id="message"></p>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #00ff99, #0072ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e5e7eb;
+}
+
+    /*  REGISTER CARD  */
+form {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(14px);
+    padding: 38px 32px;
+    border-radius: 18px;
+    box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5);
+}
+    /*  TITLE  */
+h2 {
+    text-align: center;
+    margin-bottom: 26px;
+    font-size: 2rem;
+    color: #dfe8ec;
+    letter-spacing: 0.6px;
+}
+
+/*  INPUTS */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(15, 23, 42, 0.9);
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+input:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.28);
+}
+
+/*  BUTTON  */
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 10px;
+   background: linear-gradient(135deg, #00ff99, #0072ff);
+    color: #020617;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(56, 189, 248, 0.4);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/*  MESSAGE  */
+#message {
+    margin-top: 18px;
+    text-align: center;
+    font-size: 0.9rem;
+    min-height: 20px;
+}
+
+#message.success {
+    color: #22c55e;
+}
+
+#message.error {
+    color: #ef4444;
+}
+
+/*  RESPONSIVE */
+@media (max-width: 480px) {
+    form {
+        padding: 30px 22px;
+    }
+
+    h2 {
+        font-size: 1.7rem;
+    }
+}
+</style>
+<script src="auth.js"></script>
+</body>
+</html>
