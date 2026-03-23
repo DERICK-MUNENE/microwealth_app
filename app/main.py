@@ -73,7 +73,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 app = FastAPI(title="MicroWealth AI Backend")
 
 # ADD THIS: Serve static files
-app.mount("/static", StaticFiles(directory="."), name="static")
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 # CORS 
 app.add_middleware(
@@ -893,14 +893,14 @@ def get_cbk_rates():
 @app.get("/", response_class=HTMLResponse)
 async def serve_index():
     try:
-        return FileResponse("static/index.html")
+        return FileResponse("frontend/index.html")
     except:
         return {"message": "MicroWealth AI Backend Running"}
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def serve_dashboard():
     try:
-        return FileResponse("static/dashboard.html")
+        return FileResponse("frontend/dashboard.html")
     except:
         return {"error": "Dashboard file not found"}
 
