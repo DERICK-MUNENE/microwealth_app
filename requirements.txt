@@ -8,3 +8,4 @@ python-jose[cryptography]
 pdfplumber
 numpy
 passlib[bcrypt]
+scikit-learn
