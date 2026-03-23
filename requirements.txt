@@ -9,3 +9,4 @@ pdfplumber
 numpy
 passlib[bcrypt]
 scikit-learn
+email-validator
