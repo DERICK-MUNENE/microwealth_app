@@ -7,3 +7,4 @@ python-dotenv==1.0.0
 python-jose[cryptography]
 pdfplumber
 numpy
+passlib[bcrypt]
