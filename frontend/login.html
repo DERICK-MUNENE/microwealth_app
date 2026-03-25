@@ -98,11 +98,30 @@
             Login
         </button>
 
-        <div id="message" class="message"></div>
-
+        <div class="auth-footer">
+    <p>Don’t have an account?</p>
+    <a href="register.html" class="btn-register">Create Account</a>
+    </div>
     </form>
 </div>
+<style>
+    .btn-register {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 15px;
+    background: transparent;
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
+    color: #4CAF50;
+    text-decoration: none;
+    transition: 0.3s;
+}
 
+.btn-register:hover {
+    background: #4CAF50;
+    color: white;
+}
+</style>
 <script src="/static/login.js"></script>
 </body>
 </html>
