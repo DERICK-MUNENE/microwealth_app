@@ -1,4 +1,4 @@
-// ==================== SCRIPT.JS ====================
+const API_URL = "https://microwealthapp-production.up.railway.app";
 
 
 // On page load
