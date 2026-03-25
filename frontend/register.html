@@ -1,32 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Register | MicroWealth AI</title>
-</head>
-<body>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | MicroWealth AI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
-
-<form id="registerForm">
-    <h2>Create Account</h2>
-    <input type="text" id="full_name" placeholder="Full Name" required><br><br>
-    <input type="email" id="email" placeholder="Email" required><br><br>
-    <input type="password" id="password" placeholder="Password" required><br><br>
-    <button type="submit">Register</button>
-    <p class="login-link">
-    have an account? <a href="login.html">Login here</a>
-</p>
-</form>
-
-<p id="message"></p>
 <style>
-    * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
 }
-
 
 body {
     min-height: 100vh;
@@ -37,7 +23,6 @@ body {
     color: #e5e7eb;
 }
 
-    /*  REGISTER CARD  */
 form {
     width: 100%;
     max-width: 420px;
@@ -46,8 +31,9 @@ form {
     padding: 38px 32px;
     border-radius: 18px;
     box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5);
+    animation: fadeUp 0.5s ease;
 }
-    /*  TITLE  */
+
 h2 {
     text-align: center;
     margin-bottom: 26px;
@@ -56,7 +42,6 @@ h2 {
     letter-spacing: 0.6px;
 }
 
-/*  INPUTS */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
@@ -80,14 +65,26 @@ input:focus {
     box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.28);
 }
 
-/*  BUTTON  */
+.password-container {
+    position: relative;
+}
+
+.password-container i {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #9ca3af;
+}
+
 button {
     width: 100%;
     padding: 15px;
     margin-top: 6px;
     border: none;
     border-radius: 10px;
-   background: linear-gradient(135deg, #00ff99, #0072ff);
+    background: linear-gradient(135deg, #00ff99, #0072ff);
     color: #020617;
     font-weight: 700;
     font-size: 1rem;
@@ -104,33 +101,147 @@ button:active {
     transform: translateY(0);
 }
 
-/*  MESSAGE  */
 #message {
     margin-top: 18px;
     text-align: center;
     font-size: 0.9rem;
     min-height: 20px;
+    transition: all 0.3s ease;
 }
 
-#message.success {
-    color: #22c55e;
+#message.success { color: #22c55e; }
+#message.error { color: #ef4444; }
+
+.auth-footer {
+    text-align: center;
+    margin-top: 14px;
 }
 
-#message.error {
-    color: #ef4444;
+.auth-footer a {
+    color: #38bdf8;
+    font-weight: bold;
 }
 
-/*  RESPONSIVE */
-@media (max-width: 480px) {
-    form {
-        padding: 30px 22px;
-    }
+.strength {
+    height: 6px;
+    border-radius: 5px;
+    background: #eee;
+    margin-bottom: 16px;
+}
 
-    h2 {
-        font-size: 1.7rem;
-    }
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 </style>
-<script src="/static/auth.js"></script>
+</head>
+<body>
+
+<form id="registerForm">
+    <h2>Create Account</h2>
+
+    <input type="text" id="full_name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+
+    <div class="password-container">
+        <input type="password" id="password" placeholder="Password" required>
+        <i class="fas fa-eye" id="togglePassword"></i>
+    </div>
+
+    <div class="password-container">
+        <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+        <i class="fas fa-eye" id="toggleConfirmPassword"></i>
+    </div>
+
+    <div class="strength">
+        <div class="strength-fill" id="strengthFill"></div>
+    </div>
+
+    <button type="submit" id="registerBtn">Register</button>
+
+    <p class="auth-footer">Already have an account? <a href="login.html">Login here</a></p>
+
+    <p id="message"></p>
+</form>
+
+<script>
+// Show/Hide Password
+const togglePassword = document.getElementById("togglePassword");
+const password = document.getElementById("password");
+togglePassword.addEventListener("click", () => {
+    const type = password.type === "password" ? "text" : "password";
+    password.type = type;
+    togglePassword.classList.toggle("fa-eye-slash");
+});
+
+const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+const confirmPassword = document.getElementById("confirm_password");
+toggleConfirmPassword.addEventListener("click", () => {
+    const type = confirmPassword.type === "password" ? "text" : "password";
+    confirmPassword.type = type;
+    toggleConfirmPassword.classList.toggle("fa-eye-slash");
+});
+
+// Password Strength Meter
+const strengthFill = document.getElementById("strengthFill");
+password.addEventListener("input", () => {
+    const val = password.value;
+    let strength = 0;
+    if (val.length >= 6) strength += 25;
+    if (/[A-Z]/.test(val)) strength += 25;
+    if (/[0-9]/.test(val)) strength += 25;
+    if (/[^A-Za-z0-9]/.test(val)) strength += 25;
+    strengthFill.style.width = strength + "%";
+    if (strength < 50) strengthFill.style.background = "red";
+    else if (strength < 75) strengthFill.style.background = "orange";
+    else strengthFill.style.background = "#22c55e";
+});
+
+// Submit Form
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const message = document.getElementById("message");
+
+    const full_name = document.getElementById("full_name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const passwordVal = password.value.trim();
+    const confirmVal = confirmPassword.value.trim();
+
+    if (passwordVal !== confirmVal) {
+        message.textContent = "Passwords do not match!";
+        message.className = "error";
+        return;
+    }
+
+    message.textContent = "Registering...";
+    message.className = "";
+
+    try {
+        const res = await fetch(`${API_URL}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ full_name, email, password: passwordVal })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.detail || "Registration failed");
+
+        message.textContent = "Registration successful! Redirecting...";
+        message.className = "success";
+        setTimeout(() => window.location.href = "login.html", 1500);
+
+    } catch (err) {
+        message.textContent = err.message;
+        message.className = "error";
+    }
+});
+</script>
+
 </body>
 </html>
