@@ -1,4 +1,4 @@
-const API_URL = "";
+const API_URL = "https://microwealthapp-production.up.railway.app";
 
 
 document.addEventListener("DOMContentLoaded", () => {
