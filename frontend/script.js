@@ -117,32 +117,69 @@ function setupInvestmentProjection() {
 // ------------------ RENDER ENHANCED PROJECTION ------------------
 function renderProjectionResultEnhanced(data) {
     const box = document.getElementById("projectionResult");
-    let html = `
-        <p><strong>Risk Level:</strong> ${data.risk_level ?? "N/A"}</p>
-        <p><strong>Initial Amount:</strong> KSh ${data.projection?.initial_amount ?? "N/A"}</p>
-        <p><strong>Projection Period:</strong> ${data.projection?.years ?? "N/A"} years</p>
-        <h3>Recommended Assets:</h3>
-    `;
-console.log(data.recommended_assets);
 
-    if (data.recommended_assets?.length) {
-    data.recommended_assets.forEach(asset => {
-        const explanationHTML = marked.parse((asset.detailed_explanation || "No explanation available").trim());
-        
-        html += `
-            <div class="asset-card">
-                <h4>${asset.asset_name ?? "N/A"} (${asset.asset_type ?? "N/A"})</h4>
-                <p><strong>Expected Annual Return:</strong> ${((asset.expected_return ?? 0) * 100).toFixed(2)}%</p>
-                <details>
-                    <summary>Why this asset?</summary>
-                </details>
-                <div class="asset-explanation">${explanationHTML}</div>
+    let html = `
+        <!-- SUMMARY CARDS -->
+        <div class="projection-grid">
+
+            <div class="card summary-card animate">
+                <h3>💰 Initial Investment</h3>
+                <p>KSh ${data.projection?.initial_amount?.toLocaleString() ?? "N/A"}</p>
             </div>
-        `;
-    });
-}
+
+            <div class="card summary-card animate">
+                <h3>📅 Period</h3>
+                <p>${data.projection?.years ?? "N/A"} Years</p>
+            </div>
+
+            <div class="card summary-card animate">
+                <h3>⚠ Risk Level</h3>
+                <p>${data.risk_level ?? "N/A"}</p>
+            </div>
+
+        </div>
+
+        <h2 style="margin-top:20px;">📊 Recommended Investments</h2>
+    `;
+
+    // ---------- ASSET CARDS ----------
+    if (data.recommended_assets?.length) {
+        data.recommended_assets.forEach((asset, index) => {
+
+            const explanationHTML = marked.parse(
+                (asset.detailed_explanation || "No explanation available").trim()
+            );
+
+            html += `
+                <div class="card asset-card animate" style="animation-delay:${index * 0.1}s">
+
+                    <div class="asset-header">
+                        <h3>${asset.asset_name ?? "N/A"}</h3>
+                        <span class="badge">${asset.asset_type ?? "N/A"}</span>
+                    </div>
+
+                    <div class="asset-body">
+                        <p class="return">
+                            📈 ${(asset.expected_return * 100).toFixed(2)}% Annual Return
+                        </p>
+                    </div>
+
+                    <details class="asset-details">
+                        <summary>🤖 Why this investment?</summary>
+                        <div class="asset-explanation">
+                            ${explanationHTML}
+                        </div>
+                    </details>
+
+                </div>
+            `;
+        });
+    } else {
+        html += `<p>No investment recommendations available.</p>`;
+    }
+
     box.innerHTML = html;
-    box.className = "success result-box";
+    box.className = "result-box success";
 }
 
 // ------------------ PDF ANALYSIS ------------------
