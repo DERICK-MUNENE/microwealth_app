@@ -316,6 +316,70 @@ body {
     color: #666;
 }
 
+/* Grid for summary */
+.projection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+/* Summary cards */
+.summary-card {
+    text-align: center;
+    background: linear-gradient(135deg, #4CAF50, #00c6ff);
+    color: white;
+}
+
+/* Asset cards */
+.asset-card {
+    margin-top: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.asset-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Header */
+.asset-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Badge */
+.badge {
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* Return highlight */
+.return {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+/* Expandable section */
+.asset-details summary {
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.asset-explanation {
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+/* Animation */
+.animate {
+    animation: fadeUp 0.5s ease;
+}
+
 /* Forms */
 .analysis-form, .upload-form {
     display: flex;
