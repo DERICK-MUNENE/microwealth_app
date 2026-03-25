@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 
 DB_USER = "root"
 DB_PASS = "GSsgSqFqtSsQUtmSKDhfEXKrOvpsmtkp"
-DB_HOST = "mysql.railway.internal"
+DB_HOST = "switchyard.proxy.rlwy.net"
 DB_NAME = "railway"
 DB_PORT = 47635
 
