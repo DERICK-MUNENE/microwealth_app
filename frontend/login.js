@@ -1,4 +1,4 @@
-const API_URL = "https://microwealthapp-production.up.railway.app/"; 
+const API_URL = "https://microwealthapp-production.up.railway.app"; 
 
 const form = document.getElementById("loginForm");
 const email = document.getElementById("email");
