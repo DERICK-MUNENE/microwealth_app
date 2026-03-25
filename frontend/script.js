@@ -154,31 +154,54 @@ function setupPdfAnalysis() {
 
     if (!form || !fileInput || !dropArea) return;
 
-    // Click upload area → open file dialog
+    // ---------- CLICK TO SELECT ----------
     dropArea.addEventListener("click", () => fileInput.click());
 
-    // Drag over
+    // ---------- SHOW FILE + PREVIEW ----------
+    fileInput.addEventListener("change", () => {
+        if (fileInput.files.length) {
+            const file = fileInput.files[0];
+            const fileURL = URL.createObjectURL(file);
+
+            dropArea.innerHTML = `
+                <i class="fas fa-file-pdf"></i>
+                <h3>${file.name}</h3>
+                <p style="color:green;">File selected ✔</p>
+                <iframe src="${fileURL}" width="100%" height="200px" style="margin-top:10px; border-radius:8px;"></iframe>
+            `;
+        }
+    });
+
+    // ---------- DRAG EVENTS ----------
     dropArea.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropArea.classList.add("dragging");
     });
 
-    // Drag leave
     dropArea.addEventListener("dragleave", () => {
         dropArea.classList.remove("dragging");
     });
 
-    // Drop file
     dropArea.addEventListener("drop", (e) => {
         e.preventDefault();
         dropArea.classList.remove("dragging");
 
         if (e.dataTransfer.files.length) {
             fileInput.files = e.dataTransfer.files;
+
+            const file = fileInput.files[0];
+            const fileURL = URL.createObjectURL(file);
+
+            dropArea.innerHTML = `
+                <i class="fas fa-file-pdf"></i>
+                <h3>${file.name}</h3>
+                <p style="color:green;">File ready ✔</p>
+                <iframe src="${fileURL}" width="100%" height="200px" style="margin-top:10px; border-radius:8px;"></iframe>
+            `;
         }
     });
 
-    // Submit form
+    // ---------- SUBMIT ----------
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -196,64 +219,97 @@ function setupPdfAnalysis() {
         const formData = new FormData();
         formData.append("file", fileInput.files[0]);
 
+        // ---------- LOADING + PROGRESS ----------
+        resultBox.innerHTML = `
+            <div class="progress-container">
+                <p><i class="fas fa-spinner fa-spin"></i> Uploading & analyzing...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                </div>
+            </div>
+        `;
+        resultBox.className = "result-box";
+
         try {
-            const res = await fetch(`${API_URL}/analyze-pdf`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                },
-                body: formData
-            });
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `${API_URL}/analyze-pdf`);
+            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
 
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.detail || "PDF analysis failed");
+            // ---------- PROGRESS TRACKING ----------
+            xhr.upload.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    const percent = (e.loaded / e.total) * 100;
+                    document.getElementById("progressFill").style.width = percent + "%";
+                }
+            };
 
-            let html = `
-    <p><strong>Income:</strong> KSh ${data.income ?? 0}</p>
-    <p><strong>Expenses:</strong> KSh ${data.expenses ?? 0}</p>
-    <p><strong>Net Cashflow:</strong> KSh ${data.net_cashflow ?? 0}</p>
-`;
+            xhr.onload = function () {
+                const data = JSON.parse(xhr.responseText);
 
-if (data.investment_allowed === false) {
+                if (xhr.status !== 200) {
+                    showMessage(resultBox, data.detail || "PDF analysis failed", "error");
+                    return;
+                }
 
-    html += `
-        <p style="color:red;"><strong>Status:</strong> Financially Unstable</p>
-    `;
+                // ---------- ANIMATED RESULT CARDS ----------
+                let html = `
+                    <div class="card animate">
+                        <h3>📊 Financial Summary</h3>
+                        <p><strong>Income:</strong> KSh ${data.income ?? 0}</p>
+                        <p><strong>Expenses:</strong> KSh ${data.expenses ?? 0}</p>
+                        <p><strong>Net Cashflow:</strong> KSh ${data.net_cashflow ?? 0}</p>
+                    </div>
+                `;
 
-    if (data.guidance?.length) {
-        html += `
-            <h4>Recovery Guidance:</h4>
-            <ul>
-                ${data.guidance.map(g => `<li>${g}</li>`).join("")}
-            </ul>
-        `;
-    }
+                if (data.investment_allowed === false) {
+                    html += `
+                        <div class="card danger animate">
+                            <h3>⚠ Financial Status</h3>
+                            <p>Financially Unstable</p>
+                        </div>
+                    `;
 
-} else {
+                    if (data.guidance?.length) {
+                        html += `
+                            <div class="card animate">
+                                <h4>Recovery Guidance</h4>
+                                <ul>
+                                    ${data.guidance.map(g => `<li>${g}</li>`).join("")}
+                                </ul>
+                            </div>
+                        `;
+                    }
+                } else {
+                    html += `
+                        <div class="card success animate">
+                            <h3>📈 Investment Insight</h3>
+                            <p><strong>Risk Level:</strong> ${data.risk_level ?? "N/A"}</p>
+                            <p><strong>Recommendations:</strong> 
+                                ${data.recommendations?.join(", ") || "None"}
+                            </p>
+                        </div>
+                    `;
+                }
 
-    html += `
-        <p><strong>Risk Level:</strong> ${data.risk_level ?? "N/A"}</p>
-    `;
+                resultBox.innerHTML = html;
 
-    if (data.recommendations?.length) {
-        html += `
-            <p><strong>Recommendations:</strong> 
-            ${data.recommendations.join(", ")}</p>
-        `;
-    } else {
-        html += `
-            <p><strong>Recommendations:</strong> None available</p>
-        `;
-    }
-}
+                // Reset upload area
+                fileInput.value = "";
+                dropArea.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Drag & Drop PDF Files</h3>
+                    <p>or click to browse (Max: 10MB)</p>
+                `;
 
-resultBox.innerHTML = html;
-resultBox.className = "success result-box";
+                fetchHistory();
+                populateDashboard();
+            };
 
-           
+            xhr.onerror = function () {
+                showMessage(resultBox, "Upload failed", "error");
+            };
 
-            fetchHistory();
-            populateDashboard();
+            xhr.send(formData);
 
         } catch (err) {
             showMessage(resultBox, err.message, "error");
