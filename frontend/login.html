@@ -1,130 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | MicroWealth AI</title>
-  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4CAF50, #00c6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container i {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-login:disabled {
+            background: #999;
+        }
+
+        .message {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .error { color: red; }
+        .success { color: green; }
+    </style>
 </head>
 <body>
 
-
-
-<form id="loginForm">
+<div class="login-container">
     <h2>Login</h2>
-    <input type="email" id="email" placeholder="Email" required><br><br>
-    <input type="password" id="password" placeholder="Password" required><br><br>
-    <button type="submit">Login</button>
-    <p class="register-link">
-    Don't have an account? <a href="register.html">Register here</a>
-</p>
-</form>
 
-<p id="message"></p>
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-}
+    <form id="loginForm">
 
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-   background: linear-gradient(135deg, #00ff99, #0072ff);
-}
+        <div class="form-group">
+            <input type="email" id="email" placeholder="Email" required>
+        </div>
 
-/* ===== Login Container ===== */
-form#loginForm {
-    background: #fff;
-    padding: 35px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-}
+        <div class="form-group password-container">
+            <input type="password" id="password" placeholder="Password" required>
+            <i class="fas fa-eye" id="togglePassword"></i>
+        </div>
 
-h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 26px;
-    background: linear-gradient(135deg, #00ff99, #0072ff);
-   
-}
+        <button type="submit" id="loginBtn" class="btn-login">
+            Login
+        </button>
 
+        <div id="message" class="message"></div>
 
-input[type="email"],
-input[type="password"] {
-    padding: 12px 15px;
-    margin-bottom: 18px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
-    transition: all 0.3s;
-}
+    </form>
+</div>
 
-input[type="email"]:focus,
-input[type="password"]:focus {
-    border: 1px solid #2575fc;
-    box-shadow: 0 0 6px rgba(37, 252, 170, 0.4);
-}
-
-
-button[type="submit"] {
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    background: linear-gradient(135deg, #00ff99, #0072ff);
-    color: #fff;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-button[type="submit"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(37,117,252,0.4);
-}
-
-
-#message {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 14px;
-    min-height: 18px;
-    color: red;
-}
-
-
-.register-link {
-    text-align: center;
-    margin-top: 18px;
-    font-size: 14px;
-}
-
-.register-link a {
-   background: linear-gradient(135deg, #00ff99, #0072ff);
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.register-link a:hover {
-    text-decoration: underline;
-}
-
-
-@media (max-width: 400px) {
-    form#loginForm {
-        width: 90%;
-        padding: 30px 20px;
-    }
-}
-</style>
-<script src="/static/auth.js"></script>
-<script src="/static/ui.js"></script>
-
+<script src="/static/login.js"></script>
+</body>
 </html>
