@@ -80,27 +80,6 @@ function setupSidebarNavigation() {
     }
 }
 
-// MOBILE MENU
-function setupMobileMenu() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
-
-    if (!hamburger || !navMenu) return;
-
-    hamburger.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        hamburger.innerHTML = navMenu.classList.contains('active')
-            ? '<i class="fas fa-times"></i>'
-            : '<i class="fas fa-bars"></i>';
-    });
-
-    document.addEventListener('click', e => {
-        if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-            navMenu.classList.remove('active');
-            hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-        }
-    });
-}
 
 // DATE DISPLAY
 function setupDateDisplay() {
