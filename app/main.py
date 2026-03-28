@@ -515,10 +515,10 @@ def analyze_pdf(
     net_cashflow = result["net_cashflow"]
     transactions = result.get("transactions", [])
 
-    # ---------------- STORE PDF METADATA ----------------
+       # ---------------- STORE PDF METADATA ----------------
     file_size = os.path.getsize(pdf_save_path)
-    pages_count = result.get("pages_count", 1)  # default 1 if not returned
-
+    pages_count = result.get("pages_count", 1)
+    
     try:
         analysis_json = json.dumps(result)
     
@@ -539,14 +539,16 @@ def analyze_pdf(
             }
         )
     
-        # THIS IS THE KEY LINE
         pdf_id = result_insert.lastrowid
     
         db.commit()
     
-   except Exception as e:
-            os.remove(pdf_save_path)
-            raise HTTPException(status_code=500, detail=f"Failed to save PDF metadata: {str(e)}")
+    except Exception as e:   
+        os.remove(pdf_save_path)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to save PDF metadata: {str(e)}"
+        )
 
     # ---------------- STORE TRANSACTIONS ----------------
     try:
