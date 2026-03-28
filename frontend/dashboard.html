@@ -300,7 +300,21 @@
         </div>
     </div>
 </footer>
+<script>
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
 
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when link is clicked (optional)
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+    </script>
 <script src="/static/auth.js"></script>
 <script src="/static/ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
