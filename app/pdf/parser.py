@@ -6,6 +6,8 @@ def parse_transaction_pdf(pdf_path: str):
     total_paid_in = 0.0
     total_paid_out = 0.0
 
+    seen_lines = set()  # prevent duplicates
+
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
             text = page.extract_text()
@@ -15,7 +17,23 @@ def parse_transaction_pdf(pdf_path: str):
             lines = text.split("\n")
 
             for line in lines:
+                line = line.strip()
+
+                # 🚫 Skip empty lines
+                if not line:
+                    continue
+
+                # 🚫 Skip headers and totals
+                if any(keyword in line.upper() for keyword in ["TOTAL", "TRANSACTION TYPE", "PAID IN", "PAID OUT"]):
+                    continue
+
+                # 🚫 Skip duplicate lines
+                if line in seen_lines:
+                    continue
+                seen_lines.add(line)
+
                 values = re.findall(r"([\d,]+\.\d{2})", line)
+
                 if len(values) == 2:
                     paid_in = float(values[0].replace(",", ""))
                     paid_out = float(values[1].replace(",", ""))
