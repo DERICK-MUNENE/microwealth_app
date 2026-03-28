@@ -520,33 +520,33 @@ def analyze_pdf(
     pages_count = result.get("pages_count", 1)  # default 1 if not returned
 
     try:
-    analysis_json = json.dumps(result)
-
-    result_insert = db.execute(
-        sql_text("""
-            INSERT INTO pdf_uploads
-            (user_id, filename, file_path, file_size, pages_count, analysis_result, upload_status)
-            VALUES (:uid, :name, :path, :size, :pages, :result, :status)
-        """),
-        {
-            "uid": user_id,
-            "name": safe_filename,
-            "path": pdf_save_path,
-            "size": file_size,
-            "pages": pages_count,
-            "result": analysis_json,
-            "status": "completed"
-        }
-    )
-
-    # THIS IS THE KEY LINE
-    pdf_id = result_insert.lastrowid
-
-    db.commit()
-
-    except Exception as e:
-        os.remove(pdf_save_path)
-        raise HTTPException(status_code=500, detail=f"Failed to save PDF metadata: {str(e)}")
+        analysis_json = json.dumps(result)
+    
+        result_insert = db.execute(
+            sql_text("""
+                INSERT INTO pdf_uploads
+                (user_id, filename, file_path, file_size, pages_count, analysis_result, upload_status)
+                VALUES (:uid, :name, :path, :size, :pages, :result, :status)
+            """),
+            {
+                "uid": user_id,
+                "name": safe_filename,
+                "path": pdf_save_path,
+                "size": file_size,
+                "pages": pages_count,
+                "result": analysis_json,
+                "status": "completed"
+            }
+        )
+    
+        # THIS IS THE KEY LINE
+        pdf_id = result_insert.lastrowid
+    
+        db.commit()
+    
+   except Exception as e:
+            os.remove(pdf_save_path)
+            raise HTTPException(status_code=500, detail=f"Failed to save PDF metadata: {str(e)}")
 
     # ---------------- STORE TRANSACTIONS ----------------
     try:
