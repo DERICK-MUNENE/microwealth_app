@@ -635,7 +635,7 @@ def analyze_pdf(
                 "exp": expenses,
                 "sav": net_cashflow,
                 "disp": net_cashflow,
-                "risk": mapped_risk,  # ✅ SAFE
+                "risk": mapped_risk,  
                 "source": "pdf"
             }
         )
@@ -647,7 +647,7 @@ def analyze_pdf(
             "expenses": expenses,
             "net_cashflow": net_cashflow,
             "investment_allowed": False,
-            "recovery_plan": recovery,
+            "recovery_plan": recovery.get("top_expense_leaks", []),
             "guidance": guidance_list,
             **intelligence
         }
