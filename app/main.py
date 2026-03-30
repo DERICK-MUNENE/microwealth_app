@@ -85,7 +85,21 @@ app.add_middleware(
 )
 
 
+def normalize_risk(risk: str) -> str:
+    """
+    Maps any risk value to DB-safe ENUM values.
+    Allowed values: Low, Medium, High
+    """
+    allowed = ["Low", "Medium", "High"]
 
+    if risk in allowed:
+        return risk
+
+    # Map custom cases
+    if risk == "Negative Cashflow":
+        return "Low"   # safest fallback
+
+    return "Low"  # default fallback
 
 # DB 
 def get_db():
@@ -553,7 +567,7 @@ def analyze_pdf(
     # ---------------- STORE TRANSACTIONS ----------------
     try:
         # Get the last inserted PDF id
-        pdf_id = db.execute(sql_text("SELECT LAST_INSERT_ID()")).scalar()
+      
         for tx in transactions:
             
             db.execute(
@@ -606,7 +620,9 @@ def analyze_pdf(
             daily_cut = round(leak["monthly_amount"] / 30, 2)
             guidance_list.append(f"- {leak['category'].capitalize()}: KSh {daily_cut}/day")
 
-        # Save financial record
+        raw_risk = "Negative Cashflow"
+        mapped_risk = normalize_risk(raw_risk)
+        
         db.execute(
             sql_text("""
                 INSERT INTO financial_data
@@ -619,7 +635,7 @@ def analyze_pdf(
                 "exp": expenses,
                 "sav": net_cashflow,
                 "disp": net_cashflow,
-                "risk": "Negative Cashflow",
+                "risk": mapped_risk,  # ✅ SAFE
                 "source": "pdf"
             }
         )
