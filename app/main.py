@@ -806,7 +806,7 @@ def cashflow_from_latest_pdf(
             "expenses": round(expenses_total, 2),
             "net_cashflow": round(net_cashflow, 2),
             "investment_allowed": False,
-            "recovery_plan": recovery,
+            "recovery_plan": recovery.get("top_expense_leaks", []),
             "guidance": intelligence.get("guidance"),
             "expense_breakdown": expense_breakdown,
             "expense_cutting_plan": expense_cutting_plan
