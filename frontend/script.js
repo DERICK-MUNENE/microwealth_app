@@ -392,15 +392,21 @@ function setupCashflowIntelligence() {
             // Recovery guidance if financially unstable
             if (data.recovery_plan || data.guidance?.length) {
                 html += `<h4>Recovery Guidance:</h4><ul>`;
+            
                 if (data.guidance?.length) {
                     html += data.guidance.map(g => `<li>${g}</li>`).join("");
                 }
+            
                 if (data.recovery_plan) {
-                    html += data.recovery_plan.map(r => `<li>${r}</li>`).join("");
+                    html += data.recovery_plan.map(r => `
+                        <li>
+                            <strong>${r.category}</strong>: KSh ${r.monthly_amount.toLocaleString()}
+                        </li>
+                    `).join("");
                 }
+            
                 html += `</ul>`;
-            }
-
+           }
             // ----------------- EXPENSE BREAKDOWN -----------------
             if (data.expense_breakdown?.length) {
     // Find the highest expense to normalize bar widths
