@@ -162,7 +162,6 @@ class CashflowRequest(BaseModel):
 def home():
     return {"message": "MicroWealth AI Backend Running"}
 
-# REGISTER 
 @app.post("/register")
 def register(data: RegisterInput, db: Session = Depends(get_db)):
 
@@ -180,8 +179,8 @@ def register(data: RegisterInput, db: Session = Depends(get_db)):
 
     hashed_pwd = hash_password(data.password)
 
-    #  generate token
-   token = generate_verification_token()
+    # 🔐 generate token
+    token = generate_verification_token()
 
     db.execute(
         sql_text("""
@@ -196,11 +195,12 @@ def register(data: RegisterInput, db: Session = Depends(get_db)):
             "token": token
         }
     )
+
     db.commit()
 
     return {
         "message": "User registered successfully. Verify your email.",
-        "token": token  # ⚠️ TEMP (for testing only)
+        "token": token
     }
 # LOGIN 
 @app.post("/login")
