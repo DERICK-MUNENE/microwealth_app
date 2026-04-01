@@ -180,8 +180,8 @@ def register(data: RegisterInput, db: Session = Depends(get_db)):
 
     hashed_pwd = hash_password(data.password)
 
-    # 🔐 generate token
-    token = generate_token()
+    #  generate token
+   token = generate_verification_token()
 
     db.execute(
         sql_text("""
