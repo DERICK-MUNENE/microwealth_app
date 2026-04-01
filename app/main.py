@@ -17,7 +17,10 @@ import re
 from typing import List, Optional, Dict
 from datetime import datetime  
 
+import secrets
 
+def generate_verification_token():
+    return secrets.token_urlsafe(32)
 
 # Try to import forecaster, but provide fallback
 try:
@@ -177,20 +180,28 @@ def register(data: RegisterInput, db: Session = Depends(get_db)):
 
     hashed_pwd = hash_password(data.password)
 
+    # 🔐 generate token
+    token = generate_token()
+
     db.execute(
         sql_text("""
-            INSERT INTO users (full_name, email, password)
-            VALUES (:name, :email, :password)
+            INSERT INTO users (full_name, email, password, is_verified, verification_token)
+            VALUES (:name, :email, :password, :verified, :token)
         """),
         {
             "name": data.full_name,
             "email": data.email,
-            "password": hashed_pwd
+            "password": hashed_pwd,
+            "verified": False,
+            "token": token
         }
     )
     db.commit()
 
-    return {"message": "User registered successfully"}
+    return {
+        "message": "User registered successfully. Verify your email.",
+        "token": token  # ⚠️ TEMP (for testing only)
+    }
 # LOGIN 
 @app.post("/login")
 def login(data: LoginInput, db: Session = Depends(get_db)):
